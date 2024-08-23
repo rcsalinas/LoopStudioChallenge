@@ -33,7 +33,6 @@ export const createVote = async (req: Request, res: Response) => {
     } else {
       // Increment the votes count for existing country
       country.votes += 1;
-      await country.save();
     }
 
     // Create a new vote entry
@@ -44,6 +43,7 @@ export const createVote = async (req: Request, res: Response) => {
     });
 
     await vote.save();
+    await country.save();
 
     return res.status(201).json({ message: 'Your vote was succesfully submitted', country });
   } catch (error) {

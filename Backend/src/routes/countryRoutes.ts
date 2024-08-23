@@ -1,9 +1,12 @@
 import express from 'express';
-import { getCountries } from '../controllers/countryController';
+import { getTopCountries, searchCountries } from '../controllers/countryController';
 
 const router = express.Router();
 
-// Route to get country via alphacode
-router.get('/:alpha2Code', getCountries);
+// Route to get top 10 countries
+router.get('/top', getTopCountries);
+
+// Route to search countries
+router.get('/search', searchCountries);
 
 export default router;
