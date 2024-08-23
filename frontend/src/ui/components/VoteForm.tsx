@@ -6,8 +6,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CustomTextField from "./CustomTextField";
 import VoteButton from "./VoteButton";
+import { useSelector } from "react-redux";
+import { RootState } from ".././../redux/store";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 export default function VoteForm() {
+	const countriesData = useSelector(
+		(state: RootState) => state.countriesDataReducer.countriesData
+	);
 	return (
 		<Card
 			sx={{
@@ -16,9 +22,9 @@ export default function VoteForm() {
 				borderRadius: "20px",
 				display: "flex",
 				flexDirection: "column",
-				justifyContent: "center",
+				justifyContent: "space-between",
 				paddingBottom: "3rem",
-				gap: "0.5rem",
+				gap: "1rem",
 			}}
 		>
 			<Typography
@@ -37,7 +43,7 @@ export default function VoteForm() {
 					console.log(values);
 				}}
 			>
-				{({ values, handleChange, handleSubmit }) => (
+				{({ values, handleChange, handleSubmit, setFieldValue }) => (
 					<form onSubmit={handleSubmit}>
 						<Box
 							sx={{
@@ -45,7 +51,7 @@ export default function VoteForm() {
 								flexDirection: "row",
 								justifyContent: "center",
 								alignItems: "center",
-								gap: "10px",
+								gap: "1.5rem",
 								maxHeight: "38px",
 							}}
 						>
@@ -58,6 +64,7 @@ export default function VoteForm() {
 								value={values.name}
 								placeholder="Name"
 								required
+								size="small"
 							/>
 							<CustomTextField
 								id="email"
@@ -68,17 +75,37 @@ export default function VoteForm() {
 								value={values.email}
 								placeholder="Email"
 								required
+								size="small"
 							/>
-							<CustomTextField
-								id="country"
-								label="Country"
-								type="text"
-								name="country"
-								onChange={handleChange}
-								value={values.country}
-								placeholder="Country"
-								required
-							/>
+							<FormControl
+								sx={{
+									"& .MuiOutlinedInput-root": {
+										borderRadius: "10px",
+									},
+									maxWidth: "14rem",
+									width: "100%",
+								}}
+								size="small"
+							>
+								<InputLabel id="country-label">Country</InputLabel>
+								<Select
+									labelId="country-label"
+									id="country"
+									name="country"
+									value={values.country}
+									onChange={(event) =>
+										setFieldValue("country", event.target.value)
+									}
+									label="Country"
+									required
+								>
+									{countriesData.map((country) => (
+										<MenuItem key={country.id} value={country.id}>
+											{country.label}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 
 							<VoteButton
 								disabled={!values.name || !values.email || !values.country}

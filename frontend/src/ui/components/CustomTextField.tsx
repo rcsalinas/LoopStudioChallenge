@@ -39,8 +39,10 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
 				"& .MuiOutlinedInput-root": {
 					borderRadius: "10px",
 				},
+				width: "100%",
 			}}
 			required={required}
+			fullWidth
 		/>
 	);
 };

@@ -13,11 +13,12 @@ const VoteButton: React.FC<VoteButtonProps> = ({ disabled }) => (
 		sx={{
 			height: "36px",
 			borderRadius: "8px",
-			width: "120px",
+			maxWidth: "120px",
 			backgroundColor: "#15172A",
 			fontSize: "14px",
 			fontWeight: 700,
 			textTransform: "none",
+			width: "100%",
 		}}
 		disabled={disabled}
 	>
