@@ -14,7 +14,6 @@ export const getTopCountries = async (_: Request, res: Response) => {
   }
 };
 
-
 export const searchCountries = async (req: Request, res: Response) => {
   const { query } = req.query;
 
@@ -25,8 +24,8 @@ export const searchCountries = async (req: Request, res: Response) => {
         { name: { $regex: query, $options: 'i' } }, // Case-insensitive search in name
         { capital: { $regex: query, $options: 'i' } }, // Case-insensitive search in capital
         { region: { $regex: query, $options: 'i' } }, // Case-insensitive search in region
-        { subregion: { $regex: query, $options: 'i' } } // Case-insensitive search in subregion
-      ]
+        { subregion: { $regex: query, $options: 'i' } }, // Case-insensitive search in subregion
+      ],
     });
 
     return res.status(200).json(searchResults);

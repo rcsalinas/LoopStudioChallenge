@@ -1,12 +1,12 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { fetchCountryData } from '../fetchCountryData'; 
+import { fetchCountryData } from '../fetchCountryData';
 
 const mock = new MockAdapter(axios);
 
 describe('fetchCountryData', () => {
   afterEach(() => {
-    mock.reset(); 
+    mock.reset();
   });
 
   it('should fetch and return country data successfully', async () => {
@@ -18,7 +18,9 @@ describe('fetchCountryData', () => {
       subregion: 'Central America',
     };
 
-    mock.onGet(`https://restcountries.com/v3.1/alpha/${alpha2Code}`).reply(200, [mockData]);
+    mock
+      .onGet(`https://restcountries.com/v3.1/alpha/${alpha2Code}`)
+      .reply(200, [mockData]);
 
     const data = await fetchCountryData(alpha2Code);
     expect(data).toEqual(mockData);
@@ -28,6 +30,8 @@ describe('fetchCountryData', () => {
     const alpha2Code = 'HN';
     mock.onGet(`https://restcountries.com/v3.1/alpha/${alpha2Code}`).reply(500);
 
-    await expect(fetchCountryData(alpha2Code)).rejects.toThrow('Unable to fetch country data');
+    await expect(fetchCountryData(alpha2Code)).rejects.toThrow(
+      'Unable to fetch country data'
+    );
   });
 });

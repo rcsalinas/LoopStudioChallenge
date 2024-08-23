@@ -45,9 +45,11 @@ export const createVote = async (req: Request, res: Response) => {
     await vote.save();
     await country.save();
 
-    return res.status(201).json({ message: 'Your vote was succesfully submitted', country });
+    return res
+      .status(201)
+      .json({ message: 'Your vote was succesfully submitted', country });
   } catch (error) {
     console.error('Error creating vote:', error);
-    return  res.status(500).json({ message: 'Server Error' });
+    return res.status(500).json({ message: 'Server Error' });
   }
 };

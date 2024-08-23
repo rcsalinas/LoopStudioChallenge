@@ -20,13 +20,13 @@ export const connect = async (): Promise<void> => {
 };
 
 export const close = async (): Promise<void> => {
-  if (mongoose.connection.readyState !== 0) { // Check if a connection exists
+  if (mongoose.connection.readyState !== 0) {
+    // Check if a connection exists
     await mongoose.disconnect();
     if (mongoServer) {
       await mongoServer.stop();
     }
   }
 };
-
 
 export default { connect, close };

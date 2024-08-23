@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../index'; 
+import app from '../../index';
 import { connect, close } from '../../config/db';
 import Vote from '../../models/Vote';
 import Country from '../../models/Country';
@@ -67,15 +67,16 @@ describe('POST /api/votes', () => {
     jest.spyOn(Vote, 'findOne').mockImplementationOnce(() => {
       throw new Error('Unexpected Error');
     });
-    
-    const response =  await request(app)
-    .post('/api/votes')
-    .send({
-      name: 'Jane Doe',
-      email: 'jane@example.com',
-      countryCode: 'TC',
-    }).expect(500);
-    
+
+    const response = await request(app)
+      .post('/api/votes')
+      .send({
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        countryCode: 'TC',
+      })
+      .expect(500);
+
     expect(response.body.message).toBe('Server Error');
   });
 });

@@ -9,7 +9,11 @@ dotenv.config();
 const app = express();
 
 if (process.env.NODE_ENV !== 'test') {
-  connectDB.connect().catch((error: any) => console.error('Failed to connect to the database:', error));
+  connectDB
+    .connect()
+    .catch((error: any) =>
+      console.error('Failed to connect to the database:', error)
+    );
 }
 
 // Middlewares
