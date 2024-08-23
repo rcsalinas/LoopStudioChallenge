@@ -7,7 +7,6 @@ export const getTopCountries = async (_: Request, res: Response) => {
     const topCountries = await Country.find()
       .sort({ votes: -1 }) // Sort by votes in descending order
       .limit(10); // Limit to top 10
-
     return res.status(200).json(topCountries);
   } catch (error) {
     console.error('Error retrieving top countries:', error);
@@ -18,10 +17,6 @@ export const getTopCountries = async (_: Request, res: Response) => {
 
 export const searchCountries = async (req: Request, res: Response) => {
   const { query } = req.query;
-
-  if (!query || typeof query !== 'string') {
-    return res.status(400).json({ message: 'Invalid search query' });
-  }
 
   try {
     // Search for countries based on query in name, capital, region, or subregion

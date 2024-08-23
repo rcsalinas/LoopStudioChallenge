@@ -7,7 +7,6 @@ import Country from '../../models/Country';
 beforeAll(async () => {
   await connect();
 
-  // Seed the country data
   await Country.create({
     name: 'Test Country',
     officialName: 'Test Country Official',
@@ -19,7 +18,6 @@ beforeAll(async () => {
 });
 
 afterEach(async () => {
-  // Clear all collections after each test
   await Vote.deleteMany({});
   await Country.deleteMany({});
 });
@@ -63,5 +61,21 @@ describe('POST /api/votes', () => {
       .expect(400);
 
     expect(response.body.message).toBe('You have already voted');
+  });
+
+  it('should handle unexpected errors ', async () => {
+    jest.spyOn(Vote, 'findOne').mockImplementationOnce(() => {
+      throw new Error('Unexpected Error');
+    });
+    
+    const response =  await request(app)
+    .post('/api/votes')
+    .send({
+      name: 'Jane Doe',
+      email: 'jane@example.com',
+      countryCode: 'TC',
+    }).expect(500);
+    
+    expect(response.body.message).toBe('Server Error');
   });
 });

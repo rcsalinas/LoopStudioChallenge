@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://restcountries.com/v3.1/alpha/'; // Base URL for fetching country data
+const API_URL = 'https://restcountries.com/v3.1/alpha/';
 
 export const fetchCountryData = async (alpha2Code: string) => {
   try {
