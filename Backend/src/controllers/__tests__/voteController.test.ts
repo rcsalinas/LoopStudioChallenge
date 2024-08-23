@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../index'; // Your Express app
+import app from '../../index'; 
 import { connect, close } from '../../config/db';
 import Vote from '../../models/Vote';
 import Country from '../../models/Country';
