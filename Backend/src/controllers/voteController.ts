@@ -1,15 +1,53 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Request, Response } from 'express';
+import Vote from '../models/Vote';
+import Country from '../models/Country';
+import { fetchCountryData } from '../utils/fetchCountryData';
 
-export interface IVote extends Document {
-  userId: mongoose.Schema.Types.ObjectId;
-  countryCode: string;
-  timestamp: Date;
-}
+export const createVote = async (req: Request, res: Response) => {
+  const { name, email, countryCode } = req.body;
 
-const VoteSchema: Schema = new Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  countryCode: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-});
+  try {
+    // Check if the user has already voted
+    const existingVote = await Vote.findOne({ email });
+    if (existingVote) {
+      return res.status(400).json({ message: 'You have already voted' });
+    }
 
-export default mongoose.model<IVote>('Vote', VoteSchema);
+    // Fetch country data from the public API
+    const countryData = await fetchCountryData(countryCode);
+
+    // Check if country exists in the database
+    let country = await Country.findOne({ alpha2Code: countryCode });
+
+    if (!country) {
+      // Create a new country entry if it doesn't exist
+      country = new Country({
+        name: countryData.name.common,
+        officialName: countryData.name.official,
+        capital: countryData.capital[0],
+        region: countryData.region,
+        subregion: countryData.subregion,
+        alpha2Code: countryData.cca2,
+        votes: 1,
+      });
+    } else {
+      // Increment the votes count for existing country
+      country.votes += 1;
+      await country.save();
+    }
+
+    // Create a new vote entry
+    const vote = new Vote({
+      name,
+      email,
+      countryCode,
+    });
+
+    await vote.save();
+
+    return res.status(201).json({ message: 'Your vote was succesfully submitted', country });
+  } catch (error) {
+    console.error('Error creating vote:', error);
+    return  res.status(500).json({ message: 'Server Error' });
+  }
+};

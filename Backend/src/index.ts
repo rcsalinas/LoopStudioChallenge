@@ -1,6 +1,8 @@
 import express from 'express';
 import connectDB from './config/db';
 import dotenv from 'dotenv';
+import countryRoutes from './routes/countryRoutes';
+import voteRoutes from './routes/voteRoutes';
 
 dotenv.config();
 
@@ -13,7 +15,10 @@ connectDB();
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
+app.use('/api/countries', countryRoutes);
+app.use('/api/votes', voteRoutes);
+
+app.get('/', (_, res) => {
   res.send('API is running...');
 });
 
