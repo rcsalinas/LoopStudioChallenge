@@ -1,8 +1,15 @@
 import React from "react";
-import "./App.css";
+import HomePage from "./ui/pages/HomePage/HomePage";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import theme from "./theme";
 
 function App() {
-	return <div className="App"></div>;
+	return (
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<HomePage />
+		</ThemeProvider>
+	);
 }
 
 export default App;
