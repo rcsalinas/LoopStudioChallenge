@@ -7,24 +7,24 @@ import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
 
 export default function HomePageUI() {
-	const { message } = useSelector((state: RootState) => state.banner);
-	return (
-		<>
-			<AppBar />
+  const { message } = useSelector((state: RootState) => state.banner);
+  return (
+    <>
+      <AppBar />
 
-			<Box
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					flexDirection: "column",
-					alignItems: "center",
-					width: "100%",
-					padding: "0 10rem",
-				}}
-			>
-				{message && <MessageBanner />}
-				<VoteForm />
-			</Box>
-		</>
-	);
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          padding: "0 10rem",
+        }}
+      >
+        {message && <MessageBanner />}
+        <VoteForm />
+      </Box>
+    </>
+  );
 }

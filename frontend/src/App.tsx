@@ -6,14 +6,14 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 function App() {
-	return (
-		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<HomePage />
-			</ThemeProvider>
-		</Provider>
-	);
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <HomePage />
+      </ThemeProvider>
+    </Provider>
+  );
 }
 
 export default App;
