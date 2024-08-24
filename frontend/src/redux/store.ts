@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import countriesDataReducer from "./slices/countriesSlice";
 import submitVoteLoadingReducer from "./slices/submitLoadingSlice";
-import setSubmitVoteError from "./slices/errorSlice";
+import bannerReducer from "./slices/bannerSlice";
 
 const store = configureStore({
 	reducer: {
 		countriesDataReducer: countriesDataReducer,
 		submitVoteLoading: submitVoteLoadingReducer,
-		setSubmitVoteError: setSubmitVoteError,
+		banner: bannerReducer,
 	},
 });
 

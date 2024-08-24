@@ -20,10 +20,9 @@ import {
 	startLoading,
 	stopLoading,
 } from "../../redux/slices/submitLoadingSlice";
-import {
-	setSubmitVoteError,
-	clearSubmitVoteError,
-} from "../../redux/slices/errorSlice";
+import { showError, showSuccess } from "../../redux/slices/bannerSlice";
+
+import { ErrorResponse } from "../../interfaces/apiInterfaces";
 
 export default function VoteForm() {
 	const dispatch = useDispatch();
@@ -42,11 +41,11 @@ export default function VoteForm() {
 		dispatch(startLoading());
 		try {
 			let response = await createVote(values);
-
+			dispatch(showSuccess(response.responseMessage));
 			dispatch(stopLoading());
-			dispatch(clearSubmitVoteError());
 		} catch (err: any) {
-			dispatch(setSubmitVoteError(err.message));
+			console.log(err);
+			dispatch(showError(err.errorMessage));
 		} finally {
 			dispatch(stopLoading());
 		}
@@ -63,6 +62,7 @@ export default function VoteForm() {
 				justifyContent: "space-between",
 				paddingBottom: "3rem",
 				gap: "1rem",
+				width: "100%",
 			}}
 		>
 			<Typography
@@ -118,7 +118,6 @@ export default function VoteForm() {
 									"& .MuiOutlinedInput-root": {
 										borderRadius: "10px",
 									},
-									maxWidth: "14rem",
 									width: "100%",
 								}}
 								size="small"
