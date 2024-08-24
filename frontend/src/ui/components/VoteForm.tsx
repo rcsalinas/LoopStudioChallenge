@@ -6,14 +6,52 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CustomTextField from "./CustomTextField";
 import VoteButton from "./VoteButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from ".././../redux/store";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import {
+	Select,
+	MenuItem,
+	FormControl,
+	InputLabel,
+	CircularProgress,
+} from "@mui/material";
+import createVote from "../../networking/endpoints/votes/createVote";
+import {
+	startLoading,
+	stopLoading,
+} from "../../redux/slices/submitLoadingSlice";
+import {
+	setSubmitVoteError,
+	clearSubmitVoteError,
+} from "../../redux/slices/errorSlice";
 
 export default function VoteForm() {
+	const dispatch = useDispatch();
 	const countriesData = useSelector(
 		(state: RootState) => state.countriesDataReducer.countriesData
 	);
+	const isLoading = useSelector(
+		(state: RootState) => state.submitVoteLoading.isLoading
+	);
+
+	const handleSubmit = async (values: {
+		name: string;
+		email: string;
+		countryCode: string;
+	}) => {
+		dispatch(startLoading());
+		try {
+			let response = await createVote(values);
+
+			dispatch(stopLoading());
+			dispatch(clearSubmitVoteError());
+		} catch (err: any) {
+			dispatch(setSubmitVoteError(err.message));
+		} finally {
+			dispatch(stopLoading());
+		}
+	};
+
 	return (
 		<Card
 			sx={{
@@ -38,10 +76,8 @@ export default function VoteForm() {
 				{constants.FORM_TITLE}
 			</Typography>
 			<Formik
-				initialValues={{ name: "", email: "", country: "" }}
-				onSubmit={(values) => {
-					console.log(values);
-				}}
+				initialValues={{ name: "", email: "", countryCode: "" }}
+				onSubmit={handleSubmit}
 			>
 				{({ values, handleChange, handleSubmit, setFieldValue }) => (
 					<form onSubmit={handleSubmit}>
@@ -90,11 +126,11 @@ export default function VoteForm() {
 								<InputLabel id="country-label">Country</InputLabel>
 								<Select
 									labelId="country-label"
-									id="country"
-									name="country"
-									value={values.country}
+									id="countryCode"
+									name="countryCode"
+									value={values.countryCode}
 									onChange={(event) =>
-										setFieldValue("country", event.target.value)
+										setFieldValue("countryCode", event.target.value)
 									}
 									label="Country"
 									required
@@ -108,8 +144,14 @@ export default function VoteForm() {
 							</FormControl>
 
 							<VoteButton
-								disabled={!values.name || !values.email || !values.country}
-							/>
+								disabled={!values.name || !values.email || !values.countryCode}
+							>
+								{isLoading ? (
+									<CircularProgress size={24} />
+								) : (
+									constants.SUBMIT_VOTE_BUTTON_TITLE
+								)}
+							</VoteButton>
 						</Box>
 					</form>
 				)}

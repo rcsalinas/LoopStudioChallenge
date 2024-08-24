@@ -1,12 +1,14 @@
 // components/VoteButton.tsx
 import Button from "@mui/material/Button";
 import constants from "../../config/constants";
+import React from "react";
 
 interface VoteButtonProps {
 	disabled: boolean;
+	children: React.ReactNode;
 }
 
-const VoteButton: React.FC<VoteButtonProps> = ({ disabled }) => (
+const VoteButton: React.FC<VoteButtonProps> = ({ disabled, children }) => (
 	<Button
 		variant="contained"
 		type="submit"
@@ -22,7 +24,7 @@ const VoteButton: React.FC<VoteButtonProps> = ({ disabled }) => (
 		}}
 		disabled={disabled}
 	>
-		{constants.SUBMIT_VOTE_BUTTON_TITLE}
+		{children}
 	</Button>
 );
 

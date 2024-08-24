@@ -4,7 +4,7 @@ import { configuration } from "../../../config/configuration";
 interface VoteData {
 	name: string;
 	email: string;
-	alpha2Code: string;
+	countryCode: string;
 }
 
 const createVote = async (voteData: VoteData) => {
