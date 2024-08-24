@@ -1,33 +1,26 @@
-import api from "../../api";
-import { configuration } from "../../../config/configuration";
-import { ErrorResponse, Response } from "../../../interfaces/apiInterfaces";
+import api from '../../api'
+import { configuration } from '../../../config/configuration'
+import { ErrorResponse, Response } from '../../../interfaces/apiInterfaces'
 
-interface SearchCountriesParams {
-  query: string;
-}
-
-const searchCountries = async (params: SearchCountriesParams) => {
+const searchCountries = async (query: string) => {
   try {
-    const response = await api.get(
-      configuration.BASE_URL + "countries/search",
-      {
-        params,
-      },
-    );
+    const response = await api.get(configuration.BASE_URL + 'countries/search', {
+      params: { query: query }
+    })
 
-    const data = await response.data;
+    const data = await response.data
     const responseMessage: Response = {
-      responseMessage: data.message,
       statusCode: response.status,
-    };
-    return responseMessage;
+      data: data
+    }
+    return responseMessage
   } catch (error: any) {
     const errorResponse: ErrorResponse = {
       errorMessage: error.response?.data?.message,
-      statusCode: error.response?.status,
-    };
-    throw errorResponse;
+      statusCode: error.response?.status
+    }
+    throw errorResponse
   }
-};
+}
 
-export default searchCountries;
+export default searchCountries

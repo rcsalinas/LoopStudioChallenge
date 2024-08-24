@@ -5,6 +5,10 @@ import VoteForm from '../../components/VoteForm'
 import MessageBanner from '../../components/MessageBanner'
 import { RootState } from '../../../redux/store'
 import { useSelector } from 'react-redux'
+import Typography from '@mui/material/Typography'
+import constants from '../../../config/constants'
+import SearchInputComponent from '../../components/SearchInput'
+import CountriesTable from '../../components/CountriesTable'
 
 export default function HomePageUI() {
   const { message } = useSelector((state: RootState) => state.banner)
@@ -18,11 +22,32 @@ export default function HomePageUI() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '100%',
-          padding: '0 10rem'
+          padding: '0 10rem 5rem 10rem'
         }}
       >
         {message && <MessageBanner />}
         <VoteForm />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            width: '100%',
+            gap: '1.5rem'
+          }}
+        >
+          <Typography
+            variant='h4'
+            sx={{
+              fontWeight: 'bold'
+            }}
+          >
+            {constants.TABLE_TITLE}
+          </Typography>
+          <SearchInputComponent name='search' placeholder={constants.SEARC_INPUT_PLACEHOLDER} label='Search' />
+
+          <CountriesTable />
+        </Box>
       </Box>
     </>
   )

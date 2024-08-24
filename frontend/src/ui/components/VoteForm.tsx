@@ -22,7 +22,7 @@ export default function VoteForm() {
     dispatch(startLoading())
     try {
       let response = await createVote(values)
-      dispatch(showSuccess(response.responseMessage))
+      dispatch(showSuccess(response.responseMessage || ''))
       dispatch(stopLoading())
     } catch (err: any) {
       console.log(err)
