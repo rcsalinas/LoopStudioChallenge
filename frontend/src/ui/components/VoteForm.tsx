@@ -12,6 +12,9 @@ import { Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mu
 import createVote from '../../networking/endpoints/votes/createVote'
 import { startLoading, stopLoading } from '../../redux/slices/submitLoadingSlice'
 import { showError, showSuccess } from '../../redux/slices/bannerSlice'
+import { setLoading } from '../../redux/slices/countriesLoadingSlice'
+import { setTopCountries } from '../../redux/slices/topCountriesSlice'
+import getTopCountries from '../../networking/endpoints/countries/getTopCountries'
 
 export default function VoteForm() {
   const dispatch = useDispatch()
@@ -20,8 +23,11 @@ export default function VoteForm() {
 
   const handleSubmit = async (values: { name: string; email: string; countryCode: string }) => {
     dispatch(startLoading())
+    dispatch(setLoading(true))
     try {
-      let response = await createVote(values)
+      const response = await createVote(values)
+      const data = await getTopCountries()
+      dispatch(setTopCountries(data.data))
       dispatch(showSuccess(response.responseMessage || ''))
       dispatch(stopLoading())
     } catch (err: any) {
@@ -29,6 +35,7 @@ export default function VoteForm() {
       dispatch(showError(err.errorMessage))
     } finally {
       dispatch(stopLoading())
+      dispatch(setLoading(false))
     }
   }
 

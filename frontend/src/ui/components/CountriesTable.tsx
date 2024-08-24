@@ -6,31 +6,17 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import getTopCountries from '../../networking/endpoints/countries/getTopCountries'
+
 import { RootState } from '../../redux/store'
-import { useDispatch, useSelector } from 'react-redux'
-import { setTopCountries } from '../../redux/slices/topCountriesSlice'
-import { showError } from '../../redux/slices/bannerSlice'
+import { useSelector } from 'react-redux'
+
 import cajaVacia from '../../assets/caja-vacia.png'
 import { Typography, Box } from '@mui/material'
 import constants from '../../config/constants'
 import { tableCellClasses } from '@mui/material/TableCell'
 
 export default function CountriesTable() {
-  const dispatch = useDispatch()
   const filteredCountries = useSelector((state: RootState) => state.topCountries.filteredCountries)
-
-  React.useEffect(() => {
-    async function getCountriesInfo() {
-      try {
-        const response = await getTopCountries()
-        dispatch(setTopCountries(response.data))
-      } catch (error: any) {
-        dispatch(showError(error.errorMessage))
-      }
-    }
-    getCountriesInfo()
-  }, [dispatch])
 
   return (
     <>

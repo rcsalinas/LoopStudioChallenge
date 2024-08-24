@@ -3,13 +3,15 @@ import countriesDataReducer from './slices/countriesSlice'
 import submitVoteLoadingReducer from './slices/submitLoadingSlice'
 import bannerReducer from './slices/bannerSlice'
 import topCountriesReducer from './slices/topCountriesSlice'
+import countriesLoadingReducer from './slices/countriesLoadingSlice'
 
 const store = configureStore({
   reducer: {
     countriesDataReducer: countriesDataReducer,
     submitVoteLoading: submitVoteLoadingReducer,
     banner: bannerReducer,
-    topCountries: topCountriesReducer
+    topCountries: topCountriesReducer,
+    countriesLoading: countriesLoadingReducer
   }
 })
 

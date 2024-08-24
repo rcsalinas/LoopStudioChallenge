@@ -9,9 +9,12 @@ import Typography from '@mui/material/Typography'
 import constants from '../../../config/constants'
 import SearchInputComponent from '../../components/SearchInput'
 import CountriesTable from '../../components/CountriesTable'
+import TableSkeletonLoader from '../../components/LoadingTable'
 
 export default function HomePageUI() {
   const { message } = useSelector((state: RootState) => state.banner)
+  const tableLoading = useSelector((state: RootState) => state.countriesLoading.isLoading)
+
   return (
     <>
       <AppBar />
@@ -44,9 +47,10 @@ export default function HomePageUI() {
           >
             {constants.TABLE_TITLE}
           </Typography>
+
           <SearchInputComponent name='search' placeholder={constants.SEARC_INPUT_PLACEHOLDER} label='Search' />
 
-          <CountriesTable />
+          {tableLoading ? <TableSkeletonLoader /> : <CountriesTable />}
         </Box>
       </Box>
     </>
