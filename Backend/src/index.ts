@@ -3,15 +3,26 @@ import connectDB from './config/db';
 import dotenv from 'dotenv';
 import countryRoutes from './routes/countryRoutes';
 import voteRoutes from './routes/voteRoutes';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true,
+  })
+);
+
+app.options('*', cors());
 
 if (process.env.NODE_ENV !== 'test') {
   connectDB
     .connect()
-    .catch((error: any) =>
+    .catch((error: Error) =>
       console.error('Failed to connect to the database:', error)
     );
 }
