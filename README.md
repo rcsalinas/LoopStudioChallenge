@@ -69,3 +69,21 @@ To run tests for both the backend and frontend:
 ## Contact
 
 Feel free to reach out if you need the `.env` file for local backend testing or if you have any other questions. The .env file must be added to the root of the Backend directory. It took me about 12 hours in several coding sessions to finish it.
+
+## Configuration
+
+To switch between the production backend and a local backend for testing:
+
+1. Open the `src/config/configuration.ts` file in the frontend directory
+2. Update the `BASE_URL` by uncommenting the appropriate line and commenting out the other.
+
+   ```typescript
+   export const configuration = {
+     // For local backend:
+     // BASE_URL: 'http://localhost:5000/api/',
+     
+     // For production backend:
+     BASE_URL: 'https://loopstudiochallenge.onrender.com/api/',
+     
+     TIME_OUT: 40000
+   }
