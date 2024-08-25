@@ -1,49 +1,148 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-import { useDispatch } from 'react-redux'
+import { screen, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import HomePage from '../../../src/ui/pages/HomePage/HomePage'
-import { getCountries } from '../../../src/networking/services/getCountries'
-import { setCountriesData } from '../../../src/redux/slices/countriesSlice'
-import { setTopCountries } from '../../../src/redux/slices/topCountriesSlice'
-import { showError } from '../../../src/redux/slices/bannerSlice'
-import getTopCountries from '../../../src/networking/endpoints/countries/getTopCountries'
-import { setLoading } from '../../../src/redux/slices/countriesLoadingSlice'
+import { renderWithProviders } from '../../../src/utils/test-utils'
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: jest.fn()
-}))
+jest.mock('../../../src/networking/services/getCountries')
+jest.mock('../../../src/networking/endpoints/countries/getTopCountries')
 
-jest.mock('../../../networking/services/getCountries')
-jest.mock('../../../networking/endpoints/countries/getTopCountries')
-
-const mockDispatch = jest.fn()
-const mockGetCountries = getCountries as jest.MockedFunction<typeof getCountries>
-const mockGetTopCountries = getTopCountries as jest.MockedFunction<typeof getTopCountries>
+const initialState = {
+  countriesDataReducer: {
+    countriesData: [
+      {
+        label: 'Afghanistan',
+        id: 'AF'
+      },
+      {
+        label: 'Albania',
+        id: 'AL'
+      },
+      {
+        label: 'Algeria',
+        id: 'DZ'
+      },
+      {
+        label: 'Andorra',
+        id: 'AD'
+      },
+      {
+        label: 'Angola',
+        id: 'AO'
+      },
+      {
+        label: 'Antigua and Barbuda',
+        id: 'AG'
+      },
+      {
+        label: 'Argentina',
+        id: 'AR'
+      },
+      {
+        label: 'Armenia',
+        id: 'AM'
+      },
+      {
+        label: 'Australia',
+        id: 'AU'
+      },
+      {
+        label: 'Austria',
+        id: 'AT'
+      },
+      {
+        label: 'Azerbaijan',
+        id: 'AZ'
+      },
+      {
+        label: 'Bahamas',
+        id: 'BS'
+      },
+      {
+        label: 'Bahrain',
+        id: 'BH'
+      },
+      {
+        label: 'Bangladesh',
+        id: 'BD'
+      },
+      {
+        label: 'Barbados',
+        id: 'BB'
+      },
+      {
+        label: 'Belarus',
+        id: 'BY'
+      },
+      {
+        label: 'Belgium',
+        id: 'BE'
+      },
+      {
+        label: 'Belize',
+        id: 'BZ'
+      },
+      {
+        label: 'Benin',
+        id: 'BJ'
+      },
+      {
+        label: 'Bhutan',
+        id: 'BT'
+      },
+      {
+        label: 'Bolivia',
+        id: 'BO'
+      },
+      {
+        label: 'Bosnia and Herzegovina',
+        id: 'BA'
+      },
+      {
+        label: 'Botswana',
+        id: 'BW'
+      },
+      {
+        label: 'Brazil',
+        id: 'BR'
+      },
+      {
+        label: 'Brunei',
+        id: 'BN'
+      },
+      {
+        label: 'Bulgaria',
+        id: 'BG'
+      },
+      {
+        label: 'Burkina Faso',
+        id: 'BF'
+      },
+      {
+        label: 'Burundi',
+        id: 'BI'
+      }
+    ]
+  },
+  topCountries: {
+    countries: [],
+    filteredCountries: []
+  },
+  banner: {
+    isError: false,
+    message: ''
+  },
+  countriesLoading: {
+    isLoading: false
+  },
+  submitVoteLoading: {
+    isLoading: false
+  }
+}
 
 describe('HomePage', () => {
-  beforeEach(() => {
-    const mockDispatch = useDispatch as unknown as jest.Mock
-    mockDispatch.mockClear()
-  })
-
   test('renders without crashing', () => {
-    render(<HomePage />)
-    expect(screen.getByText('HomePageUI')).toBeInTheDocument()
-  })
-
-  test('fetchCountriesData dispatches setCountriesData with correct data', async () => {
-    const mockData = [
-      { id: 'US', label: 'USA', name: 'United States' },
-      { id: 'CAN', label: 'CAN', name: 'Canada' }
-    ]
-    mockGetCountries.mockResolvedValueOnce(mockData)
-
-    render(<HomePage />)
-
-    await waitFor(() => {
-      expect(mockDispatch).toHaveBeenCalledWith(setCountriesData(mockData))
-    })
+    renderWithProviders(<HomePage />, { preloadedState: initialState })
+    expect(screen.getByText('Vote your Favourite Country')).toBeInTheDocument()
   })
 })

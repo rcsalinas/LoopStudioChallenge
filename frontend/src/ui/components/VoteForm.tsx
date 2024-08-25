@@ -119,7 +119,7 @@ export default function VoteForm() {
                   label='Country'
                   required
                 >
-                  {countriesData.map((country) => (
+                  {countriesData?.map((country) => (
                     <MenuItem key={country.id} value={country.id}>
                       {country.label}
                     </MenuItem>
